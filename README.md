@@ -38,4 +38,4 @@
 1.  Установите [PnetLab](https://pnetlab.com/) (или EVE-NG).
 2.  Склонируйте репозиторий:
     ```bash
-    git clone https://github.com/Arnik15/pnetlab-enterprise-network.git
+    git clone https://github.com/Arnik15/PnetLab-enterprise-network.git
