@@ -1,0 +1,40 @@
+/interface bridge
+add name=loopback0
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=MikroTik
+/routing bgp instance
+set default as=402 confederation=400 confederation-peers=401 router-id=\
+    9.9.9.9
+/snmp community
+set [ find default=yes ] addresses=0.0.0.0/0
+/user group
+set full policy="local,telnet,ssh,ftp,reboot,read,write,policy,test,winbox,pas\
+    sword,web,sniff,sensitive,api,romon,dude,tikapp"
+/ip address
+add address=13.230.14.1/24 comment=C-iBGP-98 interface=ether1 network=\
+    13.230.14.0
+add address=13.230.17.1/24 comment=C-iBGP-100 interface=ether2 network=\
+    13.230.17.0
+add address=13.230.16.1/24 comment=C-iBGP-97 interface=ether3 network=\
+    13.230.16.0
+add address=13.230.13.1/24 comment=C-iBGP-96 interface=ether4 network=\
+    13.230.13.0
+add address=13.230.11.1/24 comment=C-iBGP-99 interface=ether5 network=\
+    13.230.11.0
+add address=9.9.9.9 interface=loopback0 network=9.9.9.9
+/ip dhcp-client
+add !dhcp-options disabled=no interface=ether1
+/routing bgp network
+add network=13.230.14.0/24
+add network=13.230.17.0/24
+add network=13.230.16.0/24
+add network=13.230.13.0/24
+add network=13.230.11.0/24
+/routing bgp peer
+add name=peer1 remote-address=13.230.14.98 remote-as=401
+add name=peer2 remote-address=13.230.17.100 remote-as=402
+add name=peer3 remote-address=13.230.16.97 remote-as=402
+add name=peer4 remote-address=13.230.13.96 remote-as=401
+add name=peer5 remote-address=13.230.11.99 remote-as=401
+/system identity
+set name=AP-M-iBGP-1

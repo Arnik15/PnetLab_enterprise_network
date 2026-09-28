@@ -1,0 +1,162 @@
+
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname AP-C-OSPF-87
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password 7 03550958525A
+!
+aaa new-model
+!
+!
+!
+!
+!
+!
+!
+aaa session-id common
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+no ip icmp rate-limit unreachable
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip domain name APavlov-ip-domain
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+username admin privilege 15 password 7 1543595F507F
+!
+redundancy
+!
+no cdp log mismatch duplex
+!
+ip tcp synwait-time 5
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no shutdown
+ description "C-OSPF-88"
+ ip address 12.230.13.2 255.255.255.252
+ ip ospf dead-interval 20
+ ip ospf hello-interval 5
+!
+interface Ethernet0/1
+ no shutdown
+ description "M-OSPF-81"
+ ip address 12.230.16.2 255.255.255.252
+ ip ospf dead-interval 20
+ ip ospf hello-interval 5
+!
+interface Ethernet0/2
+ no shutdown
+ description "C-OSPF-86"
+ ip address 12.230.22.1 255.255.255.252
+ ip ospf dead-interval 20
+ ip ospf hello-interval 5
+!
+interface Ethernet0/3
+ no shutdown
+ description "C-OSPF-86"
+ ip address 12.230.21.1 255.255.255.252
+ ip ospf dead-interval 20
+ ip ospf hello-interval 5
+!
+interface Ethernet1/0
+ no shutdown
+ no ip address
+!
+interface Ethernet1/1
+ no shutdown
+ no ip address
+!
+interface Ethernet1/2
+ no shutdown
+ no ip address
+!
+interface Ethernet1/3
+ no shutdown
+ no ip address
+!
+router ospf 1
+ network 12.230.13.0 0.0.0.3 area 0
+ network 12.230.16.0 0.0.0.3 area 0
+ network 12.230.21.0 0.0.0.3 area 0
+ network 12.230.22.0 0.0.0.3 area 0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ exec-timeout 60 0
+ logging synchronous
+ transport input ssh
+!
+!
+end

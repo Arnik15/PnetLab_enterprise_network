@@ -1,0 +1,162 @@
+
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname AP-C-OSPF-86
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password 7 11584B564347
+!
+aaa new-model
+!
+!
+!
+!
+!
+!
+!
+aaa session-id common
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+no ip icmp rate-limit unreachable
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip domain name APavlov-ip-domain
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+username admin privilege 15 password 7 00554155500E
+!
+redundancy
+!
+no cdp log mismatch duplex
+!
+ip tcp synwait-time 5
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no shutdown
+ description "C-OSPF-87"
+ ip address 12.230.22.2 255.255.255.252
+ ip ospf dead-interval 20
+ ip ospf hello-interval 5
+!
+interface Ethernet0/1
+ no shutdown
+ description "C-OSPF-85"
+ ip address 12.230.26.1 255.255.255.252
+ ip ospf dead-interval 20
+ ip ospf hello-interval 5
+!
+interface Ethernet0/2
+ no shutdown
+ description "M-OSPF-83"
+ ip address 12.230.24.1 255.255.255.252
+ ip ospf dead-interval 20
+ ip ospf hello-interval 5
+!
+interface Ethernet0/3
+ no shutdown
+ description "IPSEC-IKEv2"
+ ip address 12.230.27.2 255.255.255.0
+!
+interface Ethernet1/0
+ no shutdown
+ description "IKEv2-Client"
+ ip address 12.230.28.2 255.255.255.252
+!
+interface Ethernet1/1
+ no shutdown
+ no ip address
+!
+interface Ethernet1/2
+ no shutdown
+ no ip address
+!
+interface Ethernet1/3
+ no shutdown
+ no ip address
+!
+router ospf 1
+ network 12.230.22.0 0.0.0.3 area 0
+ network 12.230.24.0 0.0.0.3 area 0
+ network 12.230.26.0 0.0.0.3 area 0
+ network 12.230.27.0 0.0.0.255 area 0
+ network 12.230.28.0 0.0.0.3 area 0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ exec-timeout 60 0
+ logging synchronous
+ transport input ssh
+!
+!
+end

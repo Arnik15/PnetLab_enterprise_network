@@ -1,0 +1,169 @@
+
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname AP-C-iBGP-99
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password 7 144640585851
+!
+aaa new-model
+!
+!
+!
+!
+!
+!
+!
+aaa session-id common
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+no ip icmp rate-limit unreachable
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip domain name APavlov-ip-domain
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+username admin privilege 15 password 7 075E731F1A5C
+!
+redundancy
+!
+no cdp log mismatch duplex
+!
+ip tcp synwait-time 5
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no shutdown
+ description "Main-Router"
+ ip address 16.1.1.99 255.255.255.0
+!
+interface Ethernet0/1
+ no shutdown
+ ip address 15.1.1.99 255.255.255.0
+!
+interface Ethernet0/2
+ no shutdown
+ description "C-iBGP-98"
+ ip address 13.230.12.99 255.255.255.0
+!
+interface Ethernet0/3
+ no shutdown
+ description "C-iBGP-96"
+ ip address 13.230.10.99 255.255.255.0
+!
+interface Ethernet1/0
+ no shutdown
+ description "M-iBGP-1"
+ ip address 13.230.11.99 255.255.255.0
+!
+interface Ethernet1/1
+ no shutdown
+ no ip address
+!
+interface Ethernet1/2
+ no shutdown
+ no ip address
+!
+interface Ethernet1/3
+ no shutdown
+ no ip address
+!
+router bgp 401
+ no bgp log-neighbor-changes
+ bgp confederation identifier 400
+ bgp confederation peers 402 
+ network 13.230.10.0 mask 255.255.255.0
+ network 13.230.11.0 mask 255.255.255.0
+ network 13.230.12.0 mask 255.255.255.0
+ network 15.1.1.0 mask 255.255.255.0
+ network 16.1.1.0 mask 255.255.255.0
+ redistribute connected
+ neighbor 13.230.10.96 remote-as 401
+ neighbor 13.230.10.96 next-hop-self
+ neighbor 13.230.11.1 remote-as 402
+ neighbor 13.230.11.1 ebgp-multihop 2
+ neighbor 13.230.11.1 next-hop-self
+ neighbor 13.230.12.98 remote-as 401
+ neighbor 13.230.12.98 next-hop-self
+ neighbor 15.1.1.79 remote-as 300
+ neighbor 16.1.1.1 remote-as 100
+ default-metric 1
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ exec-timeout 60 0
+ logging synchronous
+ transport input ssh
+!
+!
+end

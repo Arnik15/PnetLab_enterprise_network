@@ -1,0 +1,26 @@
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=MikroTik
+/snmp community
+set [ find default=yes ] addresses=0.0.0.0/0
+/user group
+set full policy="local,telnet,ssh,ftp,reboot,read,write,policy,test,winbox,pas\
+    sword,web,sniff,sensitive,api,romon,dude,tikapp"
+/ip address
+add address=80.230.82.2/30 interface=ether1 network=80.230.82.0
+add address=186.230.48.1/30 comment=C-RIP-67 interface=ether2 network=\
+    186.230.48.0
+add address=93.230.240.2/30 comment=C-RIP-68 interface=ether3 network=\
+    93.230.240.0
+add address=93.230.46.2/24 comment=PPTP-Server interface=ether4 network=\
+    93.230.46.0
+/ip dhcp-client
+add !dhcp-options disabled=no interface=ether1
+/routing rip
+set redistribute-connected=yes
+/routing rip network
+add network=93.230.240.0/30
+add network=93.230.46.0/30
+add network=80.230.82.0/30
+add network=186.230.48.0/30
+/system identity
+set name=APavlov-M-RIP-70

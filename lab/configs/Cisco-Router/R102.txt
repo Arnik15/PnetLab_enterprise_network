@@ -1,0 +1,140 @@
+
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R102
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+no ip icmp rate-limit unreachable
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+redundancy
+!
+no cdp log mismatch duplex
+!
+ip tcp synwait-time 5
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no shutdown
+ ip address 13.230.22.102 255.255.255.0
+ ip nat enable
+ ip virtual-reassembly in
+!
+interface Ethernet0/1
+ no shutdown
+ ip address 13.230.20.102 255.255.255.0
+ ip nat enable
+ ip virtual-reassembly in
+!
+interface Ethernet0/2
+ no shutdown
+ ip address 13.230.21.102 255.255.255.0
+ ip nat enable
+ ip virtual-reassembly in
+!
+interface Ethernet0/3
+ no shutdown
+ ip address dhcp
+ ip nat enable
+ ip virtual-reassembly in
+!
+router bgp 403
+ no bgp log-neighbor-changes
+ bgp confederation identifier 400
+ bgp confederation peers 401 402 
+ network 13.230.20.0 mask 255.255.255.0
+ network 13.230.21.0 mask 255.255.255.0
+ network 13.230.22.0 mask 255.255.255.0
+ redistribute static
+ neighbor 13.230.20.100 remote-as 402
+ neighbor 13.230.20.100 next-hop-self
+ neighbor 13.230.21.97 remote-as 402
+ neighbor 13.230.21.97 next-hop-self
+ neighbor 13.230.22.98 remote-as 401
+ neighbor 13.230.22.98 next-hop-self
+ default-information originate
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip nat source list 1 interface Ethernet0/3 overload
+!
+!
+!
+access-list 1 permit any
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ login
+ transport input none
+!
+!
+end

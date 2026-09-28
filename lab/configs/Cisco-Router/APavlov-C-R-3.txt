@@ -1,0 +1,159 @@
+
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname APavlov-C-R-3
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password 7 091D1C5A4D50
+!
+aaa new-model
+!
+!
+!
+!
+!
+!
+!
+aaa session-id common
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+no ip icmp rate-limit unreachable
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+no ip domain lookup
+ip domain name APavlov-ip-domain
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+username admin privilege 15 password 7 11584B564347
+!
+redundancy
+!
+no cdp log mismatch duplex
+!
+ip tcp synwait-time 5
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no shutdown
+ description "Main-Router"
+ ip address 10.18.0.1 255.255.255.252
+!
+interface Ethernet0/1
+ no shutdown
+ description "C-R-3-1"
+ ip address 13.230.1.2 255.255.255.252
+!
+interface Ethernet0/2
+ no shutdown
+ description "C-R-3-2"
+ ip address 13.230.2.2 255.255.255.252
+!
+interface Ethernet0/3
+ no shutdown
+ description "C-R-3-3"
+ ip address 13.230.3.2 255.255.255.252
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 10.18.0.2 254
+ip route 10.16.0.0 255.255.255.252 10.18.0.2
+ip route 10.17.0.0 255.255.255.252 10.18.0.2
+ip route 10.19.0.0 255.255.255.252 10.18.0.2
+ip route 10.230.0.0 255.255.0.0 10.18.0.2
+ip route 11.230.0.0 255.255.252.0 10.18.0.2
+ip route 12.230.0.0 255.255.0.0 10.18.0.2
+ip route 12.230.0.0 255.255.252.0 10.18.0.2
+ip route 13.230.0.0 255.255.0.0 10.18.0.2
+ip route 14.1.1.0 255.255.255.0 10.18.0.2
+ip route 14.230.0.0 255.255.252.0 10.18.0.2
+ip route 15.1.1.0 255.255.255.0 10.18.0.2
+ip route 16.1.1.0 255.255.255.0 10.18.0.2
+ip route 17.1.1.0 255.255.255.0 10.18.0.2
+ip route 75.230.0.0 255.255.0.0 10.18.0.2
+ip route 80.230.0.0 255.255.0.0 10.18.0.2
+ip route 93.230.0.0 255.255.0.0 10.18.0.2
+ip route 100.230.0.0 255.255.0.0 10.18.0.2
+ip route 111.230.0.0 255.255.252.0 10.18.0.2
+ip route 112.230.0.0 255.255.252.0 10.18.0.2
+ip route 113.230.1.0 255.255.255.252 13.230.1.1
+ip route 113.230.2.0 255.255.255.252 13.230.2.1
+ip route 113.230.3.0 255.255.255.252 13.230.3.1
+ip route 114.230.0.0 255.255.252.0 10.18.0.2
+ip route 140.230.0.0 255.255.0.0 10.18.0.2
+ip route 186.230.0.0 255.255.0.0 10.18.0.2
+ip route 213.230.0.0 255.255.0.0 10.18.0.2
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ exec-timeout 60 0
+ logging synchronous
+ transport input ssh
+!
+!
+end

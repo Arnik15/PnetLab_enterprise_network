@@ -1,0 +1,23 @@
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens3:
+      dhcp4: no
+      optional: true
+    ens4:
+      dhcp4: no
+      optional: true
+  bridges:
+    br0:
+      addresses: [114.230.2.1/24]
+      routes:
+        - to: default
+          via: 114.230.2.2
+      nameservers:
+        addresses: [8.8.8.8,8.8.4.4]
+      interfaces: [ens3, ens4]
+      parameters:
+        stp: false
+        forward-delay: 0
+      dhcp4: no

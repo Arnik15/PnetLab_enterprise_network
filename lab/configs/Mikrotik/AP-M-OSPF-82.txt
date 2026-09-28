@@ -1,0 +1,42 @@
+/interface bridge
+add name=loopback
+/interface wireless security-profiles
+set [ find default=yes ] supplicant-identity=MikroTik
+/routing ospf instance
+set [ find default=yes ] router-id=10.255.255.8
+/snmp community
+set [ find default=yes ] addresses=0.0.0.0/0
+/user group
+set full policy="local,telnet,ssh,ftp,reboot,read,write,policy,test,winbox,pas\
+    sword,web,sniff,sensitive,api,romon,dude,tikapp"
+/ip address
+add address=10.255.255.8 interface=loopback network=10.255.255.8
+add address=12.230.14.2/30 comment=AP-M-OSPF-80 interface=ether2 network=\
+    12.230.14.0
+add address=12.230.17.2/30 comment=AP-M-OSPF-81 interface=ether1 network=\
+    12.230.17.0
+add address=12.230.20.1/30 comment=AP-M-OSPF-83 interface=ether3 network=\
+    12.230.20.0
+add address=12.230.19.1/30 comment=AP-C-OSPF-84 interface=ether4 network=\
+    12.230.19.0
+add address=12.230.18.2/24 comment=IPSec-over-L2TP interface=ether5 network=\
+    12.230.18.0
+/ip dhcp-client
+add !dhcp-options disabled=no interface=ether1
+/routing ospf interface
+add dead-interval=20s hello-interval=5s interface=ether1 network-type=\
+    broadcast
+add dead-interval=20s hello-interval=5s interface=ether2 network-type=\
+    broadcast
+add dead-interval=20s hello-interval=5s interface=ether3 network-type=\
+    broadcast
+add dead-interval=20s hello-interval=5s interface=ether4 network-type=\
+    broadcast
+/routing ospf network
+add area=backbone network=12.230.17.0/30
+add area=backbone network=12.230.14.0/30
+add area=backbone network=12.230.18.0/24
+add area=backbone network=12.230.19.0/30
+add area=backbone network=12.230.20.0/30
+/system identity
+set name=AP-M-OSPF-82

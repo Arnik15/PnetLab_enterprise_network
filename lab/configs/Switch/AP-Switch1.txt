@@ -1,0 +1,139 @@
+
+!
+! Last configuration change at 17:08:21 UTC Sun Sep 27 2026
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+service compress-config
+!
+hostname AP-Switch1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password 7 025756085F53
+!
+username admin privilege 15 password 7 11584B564347
+aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+aaa session-id common
+!
+!
+!
+!
+!
+no ip icmp rate-limit unreachable
+!
+!
+!
+no ip domain-lookup
+ip domain-name APavlov-ip-domain
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+ip tcp synwait-time 5
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no shutdown
+ description "APavlov-Switch-2"
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet0/1
+ no shutdown
+ description "APavlov-PC-13"
+ switchport access vlan 10
+ switchport mode access
+!
+interface Ethernet0/2
+ no shutdown
+ description "APavlov-PC-12"
+ switchport access vlan 10
+ switchport mode access
+!
+interface Ethernet0/3
+ no shutdown
+!
+interface Ethernet1/0
+ no shutdown
+ description "APavlov-PC-15"
+ switchport access vlan 20
+ switchport mode access
+!
+interface Ethernet1/1
+ no shutdown
+ description "APavlov-SSH-Client"
+ switchport access vlan 70
+ switchport mode access
+!
+interface Ethernet1/2
+ no shutdown
+!
+interface Ethernet1/3
+ no shutdown
+!
+interface Vlan70
+ no shutdown
+ description MGMT
+ ip address 10.230.70.1 255.255.255.0
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 10.230.70.254
+!
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ exec-timeout 60 0
+ logging synchronous
+ transport input telnet
+!
+!
+end

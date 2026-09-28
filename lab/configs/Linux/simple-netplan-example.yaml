@@ -1,0 +1,9 @@
+network:
+  version: 2
+  ethernets:
+    ens3:
+      dhcp4: false
+      addresses: [75.230.46.2/30]
+      gateway4: 75.230.46.1
+      nameservers:
+        addresses: [8.8.8.8,8.8.4.4]

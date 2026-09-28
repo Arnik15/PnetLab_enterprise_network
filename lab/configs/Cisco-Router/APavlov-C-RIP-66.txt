@@ -1,0 +1,175 @@
+
+!
+version 15.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname APavlov-C-RIP-66
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable password 7 091D1C5A4D50
+!
+aaa new-model
+!
+!
+!
+!
+!
+!
+!
+aaa session-id common
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+no ip icmp rate-limit unreachable
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+!
+!
+!
+!
+ip domain name APavlov-ip-domain
+ip name-server 8.8.8.8
+ip name-server 1.1.1.1
+ip name-server 8.8.4.4
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+username admin privilege 15 password 7 11584B564347
+!
+redundancy
+!
+no cdp log mismatch duplex
+!
+ip tcp synwait-time 5
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Ethernet0/0
+ no shutdown
+ description "Main-Router"
+ ip address 17.1.1.66 255.255.255.0
+ ip access-group BezGoogle in
+!
+interface Ethernet0/1
+ no shutdown
+ description "C-RIP-65"
+ ip address 140.230.8.1 255.255.255.252
+!
+interface Ethernet0/2
+ no shutdown
+ description "C-RIP-69"
+ ip address 140.230.9.1 255.255.255.252
+!
+interface Ethernet0/3
+ no shutdown
+ description "M-OSPF-79"
+ ip address 18.1.1.66 255.255.255.0
+ ip access-group BezGoogle in
+!
+interface Ethernet1/0
+ no shutdown
+ no ip address
+!
+interface Ethernet1/1
+ no shutdown
+ no ip address
+!
+interface Ethernet1/2
+ no shutdown
+ no ip address
+!
+interface Ethernet1/3
+ no shutdown
+ no ip address
+!
+router rip
+ version 2
+ redistribute connected
+ redistribute bgp 200
+ network 140.230.0.0
+ default-metric 1
+ no auto-summary
+!
+router bgp 200
+ bgp log-neighbor-changes
+ redistribute connected
+ redistribute rip
+ neighbor 17.1.1.1 remote-as 100
+ neighbor 18.1.1.79 remote-as 300
+ default-information originate
+ default-metric 1
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+ip access-list extended BezGoogle
+ deny   ip any host 172.217.21.174
+ deny   ip any host 108.177.14.139
+ deny   ip any host 64.233.164.101
+ permit ip any any
+!
+!
+!
+!
+!
+!
+control-plane
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ exec-timeout 60 0
+ logging synchronous
+ transport input ssh
+!
+!
+end
